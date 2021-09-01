@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 
+import com.example.api_post.part5.CreateUserClass;
 import com.example.api_post.responser.MainObjectResponseClass;
 
 import retrofit2.Call;
@@ -22,38 +23,54 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl("https://app.fakejson.com/")
+//                .baseUrl("https://app.fakejson.com/")
+                .baseUrl("https://jsonplaceholder.typicode.com/")
                 .addConverterFactory(GsonConverterFactory.create()).build();
 
 
-        lastLoginObject=new LastLoginObject("12/12/12","172.111");
-        dataObjectClass=new DataObjectClass("Md.","Rafid","Rahman","Rafid","Tawhidur","rafid",lastLoginObject);
-        MainObject mainObject=new MainObject("isgBSIeyei_VrdYJGNaCwA",dataObjectClass);
+//        lastLoginObject=new LastLoginObject("12/12/12","172.111");
+//        dataObjectClass=new DataObjectClass("Md.","Rafid","Rahman","Rafid","Tawhidur","rafid",lastLoginObject);
+//        MainObject mainObject=new MainObject("isgBSIeyei_VrdYJGNaCwA",dataObjectClass);
 
 
 
 
-       OurRetrofitClient ourRetrofitClient=retrofit.create(OurRetrofitClient.class);
+//       OurRetrofitClient ourRetrofitClient=retrofit.create(OurRetrofitClient.class);
 
-        Call<MainObjectResponseClass> res=ourRetrofitClient.GetPostValue(mainObject);
+//        Call<MainObjectResponseClass> res=ourRetrofitClient.GetPostValue(mainObject);
+//
+//        res.enqueue(new Callback<MainObjectResponseClass>() {
+//            @Override
+//            public void onResponse(Call<MainObjectResponseClass> call, Response<MainObjectResponseClass> response) {
+//
+//                Log.d("aa",response.body().toString());
+//
+//                LastLoginObject object=response.body().getLast_login();
+//                String time=object.getDate_time();
+//                String ip=object.getIp4();
+//            }
+//
+//            @Override
+//            public void onFailure(Call<MainObjectResponseClass> call, Throwable t) {
+//
+//                Log.d("aa :","Failed");
+//            }
+//        });
 
-        res.enqueue(new Callback<MainObjectResponseClass>() {
-            @Override
-            public void onResponse(Call<MainObjectResponseClass> call, Response<MainObjectResponseClass> response) {
+        OurRetrofitClient ourRetrofitClient=retrofit.create(OurRetrofitClient.class);
+       Call<CreateUserClass> call= ourRetrofitClient.CreateUser(111,"This is post","Trying Post request");
 
-                Log.d("aa",response.body().toString());
+       call.enqueue(new Callback<CreateUserClass>() {
+           @Override
+           public void onResponse(Call<CreateUserClass> call, Response<CreateUserClass> response) {
+               Log.d("aa",response.body().toString());
+           }
 
-                LastLoginObject object=response.body().getLast_login();
-                String time=object.getDate_time();
-                String ip=object.getIp4();
-            }
+           @Override
+           public void onFailure(Call<CreateUserClass> call, Throwable t) {
 
-            @Override
-            public void onFailure(Call<MainObjectResponseClass> call, Throwable t) {
-
-                Log.d("aa :","Failed");
-            }
-        });
+           }
+       });
 
     }
 }
