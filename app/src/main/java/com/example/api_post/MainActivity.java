@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.util.Log;
 
 import com.example.api_post.part5.CreateUserClass;
+import com.example.api_post.part6.ObjectStructureClass;
 import com.example.api_post.responser.MainObjectResponseClass;
 
 import retrofit2.Call;
@@ -18,14 +19,15 @@ public class MainActivity extends AppCompatActivity {
 
     LastLoginObject  lastLoginObject;
     DataObjectClass dataObjectClass;
+    ObjectStructureClass objectStructureClass;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         Retrofit retrofit = new Retrofit.Builder()
 //                .baseUrl("https://app.fakejson.com/")
-                .baseUrl("https://jsonplaceholder.typicode.com/")
-                .addConverterFactory(GsonConverterFactory.create()).build();
+                .addConverterFactory(GsonConverterFactory.create()).
+        baseUrl("https://jsonplaceholder.typicode.com/").build();
 
 
 //        lastLoginObject=new LastLoginObject("12/12/12","172.111");
@@ -58,19 +60,44 @@ public class MainActivity extends AppCompatActivity {
 //        });
 
         OurRetrofitClient ourRetrofitClient=retrofit.create(OurRetrofitClient.class);
-       Call<CreateUserClass> call= ourRetrofitClient.CreateUser(111,"This is post","Trying Post request");
+//       Call<CreateUserClass> call= ourRetrofitClient.CreateUser(111,"This is post","Trying Post request");
+//
+//       call.enqueue(new Callback<CreateUserClass>() {
+//           @Override
+//           public void onResponse(Call<CreateUserClass> call, Response<CreateUserClass> response) {
+//               Log.d("aa",response.body().toString());
+//           }
+//
+//           @Override
+//           public void onFailure(Call<CreateUserClass> call, Throwable t) {
+//
+//           }
+//       });
 
-       call.enqueue(new Callback<CreateUserClass>() {
+
+
+
+        ourRetrofitClient.PutRequest(2,objectStructureClass);
+
+        objectStructureClass=new ObjectStructureClass(3,"hi","Hello");
+
+       Call<ObjectStructureClass> call= ourRetrofitClient.PutRequest(2,objectStructureClass);
+
+       call.enqueue(new Callback<ObjectStructureClass>() {
            @Override
-           public void onResponse(Call<CreateUserClass> call, Response<CreateUserClass> response) {
-               Log.d("aa",response.body().toString());
+           public void onResponse(Call<ObjectStructureClass> call, Response<ObjectStructureClass> response) {
+               Log.d("value:",response.body().toString());
+
            }
 
            @Override
-           public void onFailure(Call<CreateUserClass> call, Throwable t) {
+           public void onFailure(Call<ObjectStructureClass> call, Throwable t) {
 
+               Log.d("value:","FAILED");
            }
        });
+
+
 
     }
 }
